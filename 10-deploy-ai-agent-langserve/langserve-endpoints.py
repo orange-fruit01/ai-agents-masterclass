@@ -17,7 +17,8 @@ app = FastAPI(
     description="LangGraph backend for the AI Agents Masterclass series agent.",
 )
 
-@app.post("/info")
+# @app.post("/info")
+@app.api_route("/info", methods=["GET", "POST"])
 async def info():
     return JSONResponse(content={"status": "ok"})
 
