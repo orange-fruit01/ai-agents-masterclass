@@ -22,6 +22,11 @@ app = FastAPI(
 async def info():
     return JSONResponse(content={"status": "ok"})
 
+@app.get("/")
+async def root():
+    return {"status": "FastAPI agent is online!"}
+
+
 # Set all CORS enabled origins
 app.add_middleware(
     CORSMiddleware,
