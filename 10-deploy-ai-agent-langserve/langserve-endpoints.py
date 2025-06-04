@@ -19,7 +19,7 @@ app = FastAPI(
 
 @app.post("/info")
 async def info():
-    return JSONResponse(content={"message": "Info endpoint works!"})
+    return JSONResponse(content={"status": "ok"})
 
 # Set all CORS enabled origins
 app.add_middleware(
