@@ -5,6 +5,8 @@ from fastapi import FastAPI
 import uvicorn
 import os
 from fastapi.responses import JSONResponse
+from copilotkit.integrations.fastapi import add_fastapi_endpoint
+from copilotkit import CopilotKitRemoteEndpoint, LangGraphAgent
 
 # Load .env file
 load_dotenv()
@@ -46,6 +48,23 @@ def main():
         app,
         runnable
     )
+
+    # Fetch the LangGraph graph for CopilotKit
+    langgraph_graph = get_runnable()
+
+    # Initialize CopilotKit SDK with the LangGraph agent
+    copilotkit_sdk = CopilotKitRemoteEndpoint(
+        agents=[
+            LangGraphAgent(
+                name="ai_agent",
+                description="LangGraph agent for CopilotKit integration.",
+                graph=langgraph_graph,
+            )
+        ],
+    )
+
+    # Add CopilotKit endpoint to FastAPI
+    add_fastapi_endpoint(app, copilotkit_sdk, "/copilotkit")
 
     # Start the API
     uvicorn.run(app, host="0.0.0.0", port=8000)
