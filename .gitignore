@@ -1,6 +1,7 @@
 __pycache__
-prep
+.venv
 .env
+prep
 .env.local
 chroma_db
 test.py
