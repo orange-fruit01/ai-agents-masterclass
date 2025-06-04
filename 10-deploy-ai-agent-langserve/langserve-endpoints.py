@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 import uvicorn
 import os
+from fastapi.responses import JSONResponse
 
 # Load .env file
 load_dotenv()
@@ -15,6 +16,10 @@ app = FastAPI(
     version="1.0",
     description="LangGraph backend for the AI Agents Masterclass series agent.",
 )
+
+@app.post("/info")
+async def info():
+    return JSONResponse(content={"message": "Info endpoint works!"})
 
 # Set all CORS enabled origins
 app.add_middleware(

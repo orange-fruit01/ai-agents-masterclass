@@ -10,7 +10,7 @@ from langchain_core.messages import SystemMessage, AIMessage, HumanMessage, Tool
 from langserve import RemoteRunnable
 
 load_dotenv()
-agent_endpoint_url = os.getenv('AGENT_ENDPOINT_URL', 'http://localhost:8000')
+agent_endpoint_url = os.getenv('AGENT_ENDPOINT_URL', 'http://20.12.242.166:8000')
 
 @st.cache_resource
 def create_chatbot_instance():
