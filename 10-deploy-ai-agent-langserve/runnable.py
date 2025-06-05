@@ -1,5 +1,5 @@
 from langgraph.graph.message import AnyMessage, add_messages
-from langgraph.checkpoint.aiosqlite import AsyncSqliteSaver
+from langgraph.checkpoint.sqlite import SqliteSaver
 from langchain_core.runnables import RunnableConfig
 from langgraph.graph import END, StateGraph
 from typing_extensions import TypedDict
@@ -17,6 +17,7 @@ from tools.asana_tools import available_asana_functions
 # from tools.google_drive_tools import available_drive_functions
 # from tools.vector_db_tools import available_vector_db_functions
 from tools.energy_tools import available_energy_tools
+from tools.agent_tools import available_agent_tools
 
 load_dotenv()
 model = os.getenv('LLM_MODEL', 'gpt-4o')
@@ -31,7 +32,7 @@ model_mapping = {
 # To load the Vector DB and add Google Drive documents to the knowledgebase. You could also use something else like
 # Pinecone instead of running Chroma locally! Uncomment lines 17 and 18 + replace line 33 with 32 if you want to use these tools.
 # available_functions = available_asana_functions | available_drive_functions | available_vector_db_functions
-available_functions = {**available_asana_functions, **available_energy_tools}
+available_functions = {**available_asana_functions, **available_energy_tools, **available_agent_tools}
 tools = [tool for _, tool in available_functions.items()]
 
 for key, chatbot_class in model_mapping.items():
@@ -145,7 +146,7 @@ def get_runnable():
     workflow.add_edge("tools", "agent")
 
     # Compile the LangGraph graph into a runnable
-    memory = AsyncSqliteSaver.from_conn_string(":memory:")
+    memory = SqliteSaver.from_conn_string(":memory:")
     app = workflow.compile(checkpointer=memory)
 
     return app
